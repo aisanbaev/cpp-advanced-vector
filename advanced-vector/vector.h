@@ -34,7 +34,6 @@ public:
     }
 
     T* operator+(size_t offset) noexcept {
-        // Разрешается получать адрес ячейки памяти, следующей за последним элементом массива
         assert(offset <= capacity_);
         return buffer_ + offset;
     }
@@ -70,12 +69,12 @@ public:
     }
 
 private:
-    // Выделяет сырую память под n элементов и возвращает указатель на неё
+    // Р’С‹РґРµР»СЏРµС‚ СЃС‹СЂСѓСЋ РїР°РјСЏС‚СЊ РїРѕРґ n СЌР»РµРјРµРЅС‚РѕРІ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РЅРµС‘
     static T* Allocate(size_t n) {
         return n != 0 ? static_cast<T*>(operator new(n * sizeof(T))) : nullptr;
     }
 
-    // Освобождает сырую память, выделенную ранее по адресу buf при помощи Allocate
+    // РћСЃРІРѕР±РѕР¶РґР°РµС‚ СЃС‹СЂСѓСЋ РїР°РјСЏС‚СЊ, РІС‹РґРµР»РµРЅРЅСѓСЋ СЂР°РЅРµРµ РїРѕ Р°РґСЂРµСЃСѓ buf РїСЂРё РїРѕРјРѕС‰Рё Allocate
     static void Deallocate(T* buf) noexcept {
         operator delete(buf);
     }
@@ -103,7 +102,7 @@ public:
         : data_(other.size_)
         , size_(other.size_)  //
     {
-        // Конструируем элементы в data_, копируя их из other.data_
+        // РљРѕРЅСЃС‚СЂСѓРёСЂСѓРµРј СЌР»РµРјРµРЅС‚С‹ РІ data_, РєРѕРїРёСЂСѓСЏ РёС… РёР· other.data_
         std::uninitialized_copy_n(other.data_.GetAddress(), other.size_, data_.GetAddress());
     }
 
